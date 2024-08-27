@@ -1,0 +1,57 @@
+
+services:
+  search-service:
+    build:
+      context: ./server/services/search-service
+    env_file: ./server/services/search-service/.env
+    ports:
+      - "3003:3003"
+    networks:
+      - app-network
+
+  auth-service:
+    build:
+      context: ./server/services/auth-service
+    env_file: ./server/services/auth-service/.env
+    ports:
+      - "5000:5000"
+    networks:
+      - app-network
+  client_service:
+      build:
+        context: ./server/services/client_service
+      env_file: ./server/services/client_service/.env
+      ports:
+        - "5007:5007"
+      networks:
+        - app-network
+
+  mecanique_service:
+      build:
+        context: ./server/services/mecanique_service
+      env_file: ./server/services/mecanique_service/.env
+      ports:
+        - "5001:5001"
+      networks:
+        - app-network
+  rendez-vous-service:
+      build:
+        context: ./server/services/rendez-vous-service
+      env_file: ./server/services/rendez-vous-service/.env
+      ports:
+        - "3007:3007"
+      networks:
+        - app-network
+  frontend:
+    build:
+      context: ./client
+    ports:
+      - "5173:5173"
+    environment:
+      REACT_APP_API_URL: http://localhost:3003
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
